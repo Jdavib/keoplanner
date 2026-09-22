@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags --><title>KeoPlanner | Tu Agenda Online Inteligente</title>
+    <meta name="description" content="Organiza tus citas, aumenta tus ventas y reduce las inasistencias con la agenda online más potente y fácil de usar. Disponible en web y móvil.">
+    <meta name="keywords" content="agenda online, software de citas, gestión de reservas, app de agenda, programación online, KeoPlanner">
+    <meta name="author" content="KeoPlanner">
+    
+    <!-- Google Fonts --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles --><style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #1A1A2E; /* Fondo oscuro de respaldo */
+            color: #E0E0E0; /* Gris más claro como color de texto principal */
+            cursor: none; /* Oculta el cursor por defecto */
+            overflow-x: hidden;
+        }
+
+        a, button {
+            cursor: pointer; /* Muestra la mano sobre elementos interactivos */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Manrope', sans-serif;
+            color: #ffffff; /* Blanco para los títulos sobre fondo oscuro */
+            transition: transform 0.3s ease;
+        }
+
+        h1:hover, h2:hover, h3:hover, h4:hover {
+            transform: scale(1.03);
+        }
+        
+        /* Estilo para el gradiente de texto animado */
+        .gradient-text-animated {
+            background-image: linear-gradient(
+                90deg,
+                #f52f02, /* Naranja */
+                #7cbb00, /* Verde */
+                #00a1f1  /* Azul */
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-flow 8s linear infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Nuevo Estilo para Botones con Efecto Shimmer */
+        .shimmer-button {
+            position: relative;
+            overflow: hidden;
+            background-color: #f52f02;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .shimmer-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 75%;
+            height: 100%;
+            background: linear-gradient(
+                100deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.25) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg);
+            transition: left 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .shimmer-button:hover::before {
+            left: 125%;
+        }
+        
+        /* Micro-interacciones para elementos con fade-in al hacer scroll */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Estilo para el menú móvil de pantalla completa */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Animación flotante para el mockup del móvil */
+        @keyframes float-animation {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .float {
+            animation: float-animation 6s ease-in-out infinite;
+        }
+
+        /* Estilo para el nuevo cursor de flecha */
+        #custom-cursor {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 4.5L19.5 9.5L13.5 13.5L9.5 19.5L4.5 4.5Z' fill='white' stroke='%23f52f02' stroke-width='1' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0; /* Empieza oculto */
+            transition: opacity 0.3s ease-out;
+            transform: translate(-5px, -5px); /* Pequeño offset para alinear la punta */
+        }
+
+        body:hover #custom-cursor {
+            opacity: 1;
+        }
+
+        /* Ocultar en dispositivos táctiles */
+        @media (hover: none) {
+            #custom-cursor {
+                display: none;
+            }
+            body {
+                cursor: auto;
+            }
+        }
+        
+        /* Nuevo estilo base para tarjetas de cristal (Glassmorphism) */
+        .glass-card-base {
+            background-color: rgba(255, 255, 255, 0.1); /* Ligeramente transparente */
+            backdrop-filter: blur(15px); /* Efecto de cristal esmerilado */
+            -webkit-backdrop-filter: blur(15px); /* For Safari */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde blanco suave */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+        }
+
+        /* Estilo para tarjetas de características y precios (inherita de base) */
+        .glass-card {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(245, 47, 2, 0.5); /* Borde naranja más suave al hover */
+            box-shadow: 0 8px 30px rgba(245, 47, 2, 0.2); /* Sombra naranja más pronunciada */
+            transform: translateY(-5px);
+        }
+        
+        /* Nuevo efecto para el botón secundario */
+        .btn-secondary-effect {
+            background-color: #00a1f1;
+            color: white;
+            border: 2px solid #00a1f1;
+            transition: all 0.3s ease-out;
+        }
+
+        .btn-secondary-effect:hover {
+            background-color: transparent;
+            color: #00a1f1;
+        }
+        
+        /* Nuevo Fondo de Gradiente Animado (Mesh Gradient) */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.3;
+            will-change: transform;
+        }
+
+        .blob1 { background-color: #f52f02; width: 400px; height: 400px; animation: move1 25s infinite alternate; }
+        .blob2 { background-color: #00a1f1; width: 500px; height: 500px; animation: move2 30s infinite alternate; }
+        .blob3 { background-color: #7cbb00; width: 350px; height: 350px; animation: move3 20s infinite alternate; }
+
+        @keyframes move1 {
+            from { transform: translate(0, 0) rotate(0deg) scale(1); }
+            to { transform: translate(40vw, 50vh) rotate(180deg) scale(1.2); }
+        }
+        @keyframes move2 {
+            from { transform: translate(80vw, 20vh) rotate(0deg) scale(1.1); }
+            to { transform: translate(10vw, 80vh) rotate(-180deg) scale(0.9); }
+        }
+        @keyframes move3 {
+            from { transform: translate(50vw, 90vh) rotate(0deg) scale(0.8); }
+            to { transform: translate(90vw, 10vh) rotate(360deg) scale(1.1); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="custom-cursor"></div>
+    <div class="gradient-bg">
+        <div class="gradient-blob blob1"></div>
+        <div class="gradient-blob blob2"></div>
+        <div class="gradient-blob blob3"></div>
+    </div> 
+
+    <header id="header" class="fixed top-0 left-0 w-full glass-card-base z-50 transition-all duration-300 shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            
+
+<a href="#" class="text-2xl font-bold">
+                <span class="gradient-text-animated">KeoPlanner</span>
+            </a>
+            
+            
+
+<nav class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-gray-200 hover:text-[#f52f02] transition-colors">Características</a>
+                <a href="#how-it-works" class="text-gray-200 hover:text-[#f52f02] transition-colors">Cómo Funciona</a>
+                <a href="#pricing" class="text-gray-200 hover:text-[#f52f02] transition-colors">Precios</a>
+                <a href="#testimonials" class="text-gray-200 hover:text-[#f52f02] transition-colors">Testimonios</a>
+            </nav>
+            
+            
+
+<div class="hidden md:block">
+                 <a href="#" class="shimmer-button text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                    Empezar Gratis
+                </a>
+            </div>
+
+            
+
+<div class="md:hidden">
+                <button id="menu-btn" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    
+
+<div id="mobile-menu" class="md:hidden fixed top-0 right-0 h-full w-full bg-[#1A1A2E]/90 backdrop-blur-md z-[60] flex flex-col items-center justify-center">
+        <button id="close-menu-btn" class="absolute top-6 right-6 text-white">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <nav class="flex flex-col items-center space-y-8 text-2xl">
+            <a href="#features" class="text-white hover:text-[#f52f02] transition-colors menu-link">Características</a>
+            <a href="#how-it-works" class="text-white hover:text-[#f52f02] transition-colors menu-link">Cómo Funciona</a>
+            <a href="#pricing" class="text-white hover:text-[#f52f02] transition-colors menu-link">Precios</a>
+            <a href="#testimonials" class="text-white hover:text-[#f52f02] transition-colors menu-link">Testimonios</a>
+            <a href="#" class="mt-8 shimmer-button text-white font-semibold py-3 px-8 rounded-full shadow-lg">
+                Empezar Gratis
+            </a>
+        </nav>
+    </div>
+
+    <main>
+        
+
+<section class="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+            <div class="container mx-auto px-6 relative z-10">
+                
+
+<div class="grid md:grid-cols-2 gap-x-12 gap-y-16 items-center">
+                    
+
+<div class="text-center md:text-left">
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-6">
+                            Tu negocio, <span class="gradient-text-animated">siempre organizado</span> y un paso adelante.
+                        </h1>
+                        <p class="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-gray-300 mb-10">
+                            La solución definitiva para gestionar tus citas, optimizar tu tiempo y potenciar tus ventas. Simple, inteligente y siempre disponible.
+                        </p>
+                        <div class="flex flex-col sm:flex-row justify-center md:justify-start items-center gap-4">
+                            <a href="#" class="shimmer-button text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto">
+                                Prueba la Demo
+                            </a>
+                            <a href="#pricing" class="btn-secondary-effect font-bold py-3 px-8 rounded-full w-full sm:w-auto">
+                                Ver Planes
+                            </a>
+                        </div>
+                    </div>
+                    
+                    
+
+<div class="relative min-h-[450px] md:min-h-[500px] flex items-center justify-center">
+                        
+
+<img src="https://i.imgur.com/lM5z2hR.png" alt="App KeoPlanner en Escritorio" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl opacity-20 blur-md transform-gpu">
+                        
+                        
+
+<img src="https://i.imgur.com/gJ5G8pQ.png" alt="App KeoPlanner en iPhone" class="relative z-10 w-full max-w-[280px] sm:max-w-xs mx-auto transform-gpu transition-transform duration-300 hover:scale-105 float" onerror="this.onerror=null;this.src='https://placehold.co/400x800/CCCCCC/FFFFFF?text=App+Preview';">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+
+<section id="features" class="py-16 md:py-24 glass-card-base">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 reveal-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                        Una <span class="gradient-text-animated">plataforma completa</span> para tu crecimiento
+                    </h2>
+                    <p class="max-w-2xl mx-auto text-gray-300">
+                        Todo lo que necesitas para administrar tu negocio de servicios de manera eficiente.
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll">
+                        <div class="bg-[#f52f02] text-white rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Agenda Digital</h3>
+                        <p class="text-gray-300">Organiza las reservas online de manera automática con una agenda digital inteligente.</p>
+                    </div>
+                    
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll" style="transition-delay: 150ms;">
+                        <div class="bg-[#7cbb00] text-white rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Reservas 24/7</h3>
+                        <p class="text-gray-300">Aumenta las ventas con la oportunidad de reservar las 24h al día, todos los días del año.</p>
+                    </div>
+                    
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll" style="transition-delay: 300ms;">
+                        <div class="bg-[#00a1f1] text-white rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Recordatorios WhatsApp</h3>
+                        <p class="text-gray-300">Disminuye las inasistencias con recordatorios confiables por WhatsApp, Email y Google Calendar.</p>
+                    </div>
+                     
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll" style="transition-delay: 450ms;">
+                        <div class="bg-[#ffbb00] text-white rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm6-11a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Gestión de Clientes</h3>
+                        <p class="text-gray-300">Administra tu base de clientes con historial completo de citas y preferencias.</p>
+                    </div>
+                     
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll" style="transition-delay: 600ms;">
+                        <div class="bg-[#f52f02] text-white rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Notificaciones Inteligentes</h3>
+                        <p class="text-gray-300">Recibe alertas en tiempo real sobre nuevas reservas, cancelaciones y confirmaciones.</p>
+                    </div>
+                     
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll" style="transition-delay: 750ms;">
+                        <div class="bg-[#7cbb00] text-white rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Reportes y Análisis</h3>
+                        <p class="text-gray-300">Visualiza el rendimiento de tu negocio con reportes detallados y métricas clave.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+<section id="how-it-works" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Disminuye las inasistencias con recordatorios<br class="hidden sm:block"> confiables por WhatsApp</h2>
+                    <p class="max-w-3xl mx-auto text-gray-300 text-lg">Comienza a usar Planner en 4 simples pasos y transforma la gestión de tu negocio.</p>
+                </div>
+
+                <div class="relative max-w-5xl mx-auto">
+                    
+
+<div class="hidden md:block absolute top-14 left-0 w-full h-px bg-gray-600" aria-hidden="true"></div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-20 md:gap-x-12">
+                        
+
+<div class="relative text-center reveal-on-scroll">
+                            <div class="relative w-28 h-28 mx-auto rounded-3xl flex items-center justify-center mb-5 shadow-lg bg-[#f52f02]">
+                                <div class="absolute -top-4 -right-4 w-10 h-10 bg-gray-800 text-white rounded-full flex items-center justify-center font-bold text-lg z-10 border-4 border-white">01</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="17" y1="11" x2="23" y2="11"></line></svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Crea tu cuenta</h3>
+                            <p class="text-gray-300 px-2">Regístrate en minutos y configura tu perfil de negocio con tus servicios y horarios.</p>
+                        </div>
+
+                        
+
+<div class="relative text-center reveal-on-scroll" style="transition-delay: 150ms;">
+                            <div class="relative w-28 h-28 mx-auto rounded-3xl flex items-center justify-center mb-5 shadow-lg bg-[#7cbb00]">
+                                 <div class="absolute -top-4 -right-4 w-10 h-10 bg-gray-800 text-white rounded-full flex items-center justify-center font-bold text-lg z-10 border-4 border-white">02</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Comparte tu agenda</h3>
+                            <p class="text-gray-300 px-2">Envía el enlace de tu agenda a tus clientes por WhatsApp, redes sociales o tu sitio web.</p>
+                        </div>
+
+                        
+
+<div class="relative text-center reveal-on-scroll" style="transition-delay: 300ms;">
+                             <div class="relative w-28 h-28 mx-auto rounded-3xl flex items-center justify-center mb-5 shadow-lg bg-[#00a1f1]">
+                                 <div class="absolute -top-4 -right-4 w-10 h-10 bg-gray-800 text-white rounded-full flex items-center justify-center font-bold text-lg z-10 border-4 border-white">03</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Recibe reservas</h3>
+                            <p class="text-gray-300 px-2">Tus clientes reservan online 24/7 y reciben confirmación automática por WhatsApp.</p>
+                        </div>
+
+                        
+
+<div class="relative text-center reveal-on-scroll" style="transition-delay: 450ms;">
+                             <div class="relative w-28 h-28 mx-auto rounded-3xl flex items-center justify-center mb-5 shadow-lg bg-[#ffbb00]">
+                                 <div class="absolute -top-4 -right-4 w-10 h-10 bg-gray-800 text-white rounded-full flex items-center justify-center font-bold text-lg z-10 border-4 border-white">04</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Gestiona tu negocio</h3>
+                            <p class="text-gray-300 px-2">Visualiza todas tus citas, gestiona clientes y analiza el rendimiento de tu negocio.</p>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+<div class="text-center mt-20 reveal-on-scroll">
+                    <p class="text-gray-400 mb-5">Integrado con:</p>
+                    <div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-4">
+                        <div class="flex items-center gap-2 text-gray-200 font-medium glass-card-base px-3 py-1.5 rounded-lg">
+                            <svg class="w-5 h-5 text-green-500" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.269.655 4.505 1.905 6.344l-1.191 4.353 4.463-1.164z"></path></svg>
+                            <span>WhatsApp</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-200 font-medium glass-card-base px-3 py-1.5 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M7.25 10.75V10.75C7.25 10.1977 7.69772 9.75 8.25 9.75H15.75C16.3023 9.75 16.75 10.1977 16.75 10.75V10.75" stroke="#34A853" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10 16.25H8.25C7.69772 16.25 7.25 15.8023 7.25 15.25V8.75C7.25 8.19772 7.69772 7.75 8.25 7.75H15.75C16.3023 7.75 16.75 8.19772 16.75 8.75V15.25C16.75 15.8023 16.3023 16.25 15.75 16.25H14" stroke="#4285F4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16.75 13.25V13.25C16.75 12.6977 16.3023 12.25 15.75 12.25H8.25C7.69772 12.25 7.25 12.6977 7.25 13.25V13.25" stroke="#4285F4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10 7.75V4.75C10 4.19772 10.4477 3.75 11 3.75H13C13.5523 3.75 14 4.19772 14 4.75V7.75" stroke="#FBBC05" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14 16.25V19.25C14 19.8023 13.5523 20.25 13 20.25H11C10.4477 20.25 10 19.8023 10 19.25V16.25" stroke="#EA4335" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            <span>Google Calendar</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-200 font-medium glass-card-base px-3 py-1.5 rounded-lg">
+                            <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+                            <span>Email</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+<section id="pricing" class="py-16 md:py-24 glass-card-base">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12 reveal-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                        Planes <span class="gradient-text-animated">flexibles para todos</span>
+                    </h2>
+                    <p class="max-w-2xl mx-auto text-gray-300">
+                        Elige el plan que mejor se adapte al tamaño y las necesidades de tu negocio. Sin contratos a largo plazo.
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto items-center">
+                    
+
+<div class="glass-card p-8 rounded-xl reveal-on-scroll">
+                        <h3 class="text-xl font-semibold mb-2">Básico</h3>
+                        <p class="text-4xl font-bold my-4">$15 <span class="text-lg font-normal text-gray-400">/mes</span></p>
+                        <ul class="space-y-3 text-gray-300 mb-6">
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>1 Profesional</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Agenda Ilimitada</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Recordatorios Básicos</li>
+                        </ul>
+                        <a href="#" class="w-full block text-center bg-gray-700 text-white font-bold py-3 px-8 rounded-full hover:bg-gray-600 transition-all duration-300">
+                            Elegir Plan
+                        </a>
+                    </div>
+
+                    
+
+<div class="glass-card p-8 rounded-xl shadow-2xl border-2 border-[rgba(245,47,2,0.5)] transform lg:scale-110 reveal-on-scroll" style="transition-delay: 150ms;">
+                        <div class="text-center">
+                             <span class="bg-[#f52f02] text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Más Popular</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mt-4">Profesional</h3>
+                        <p class="text-5xl font-bold my-4">$29 <span class="text-lg font-normal text-gray-400">/mes</span></p>
+                        <ul class="space-y-3 text-gray-300 mb-6">
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Hasta 5 Profesionales</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Todo en Básico, y...</li>
+                            <li class="flex items-center font-semibold"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Recordatorios por WhatsApp</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Gestión de Clientes</li>
+                        </ul>
+                        <a href="#" class="w-full block text-center shimmer-button text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                            Elegir Plan
+                        </a>
+                    </div>
+                    
+                    
+
+<div class="glass-card p-8 rounded-xl reveal-on-scroll" style="transition-delay: 300ms;">
+                        <h3 class="text-xl font-semibold mb-2">Empresa</h3>
+                        <p class="text-4xl font-bold my-4">Contacto</p>
+                        <ul class="space-y-3 text-gray-300 mb-6">
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Profesionales Ilimitados</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Todo en Profesional, y...</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-[#7cbb00] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Soporte Prioritario</li>
+                        </ul>
+                         <a href="#" class="w-full block text-center bg-gray-700 text-white font-bold py-3 px-8 rounded-full hover:bg-gray-600 transition-all duration-300">
+                            Contactar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+<section id="testimonials" class="py-16 md:py-24 glass-card-base">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 reveal-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                        Amado por profesionales <span class="gradient-text-animated">como tú</span>
+                    </h2>
+                    <p class="max-w-2xl mx-auto text-gray-300">
+                        Descubre por qué cientos de negocios confían en KeoPlanner para su gestión diaria.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll">
+                        <p class="text-gray-300 mb-4">"Desde que uso KeoPlanner, las inasistencias se han reducido en un 80%. Mis clientes aman los recordatorios por WhatsApp. ¡Totalmente recomendado!"</p>
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=40&auto=format&fit=crop" class="w-10 h-10 rounded-full mr-3 object-cover" alt="Foto de María José" onerror="this.onerror=null;this.src='https://placehold.co/40x40/CCCCCC/FFFFFF?text=MJ';">
+                            <div>
+                                <p class="font-semibold text-[#f52f02]">María José</p>
+                                <p class="text-sm text-gray-400">Estilista Profesional</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll" style="transition-delay: 150ms;">
+                        <p class="text-gray-300 mb-4">"La interfaz es súper intuitiva y fácil de usar. Me ahorra horas de trabajo administrativo a la semana. ¡Mi negocio ahora funciona en piloto automático!"</p>
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=40&auto=format&fit=crop" class="w-10 h-10 rounded-full mr-3 object-cover" alt="Foto de Daniel Camacho" onerror="this.onerror=null;this.src='https://placehold.co/40x40/CCCCCC/FFFFFF?text=DC';">
+                            <div>
+                                <p class="font-semibold text-[#f52f02]">Daniel Camacho</p>
+                                <p class="text-sm text-gray-400">Consultor Financiero</p>
+                            </div>
+                        </div>
+                    </div>
+                     
+
+<div class="glass-card p-6 rounded-xl reveal-on-scroll" style="transition-delay: 300ms;">
+                        <p class="text-gray-300 mb-4">"Lo mejor es poder gestionar todo desde mi móvil. No importa dónde esté, siempre tengo el control total de mi agenda y mis clientes."</p>
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=40&auto=format&fit=crop" class="w-10 h-10 rounded-full mr-3 object-cover" alt="Foto de Sofia Contreras" onerror="this.onerror=null;this.src='https://placehold.co/40x40/CCCCCC/FFFFFF?text=SC';">
+                            <div>
+                                <p class="font-semibold text-[#f52f02]">Sofía Contreras</p>
+                                <p class="text-sm text-gray-400">Fisioterapeuta</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+<section class="py-16 md:py-24">
+             <div class="container mx-auto px-6 text-center">
+                 <div class="max-w-4xl mx-auto reveal-on-scroll">
+                    <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                        ¿Listo para transformar <span class="gradient-text-animated">la gestión de tu negocio?</span>
+                    </h2>
+                    <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-300 mb-10">
+                        Únete a miles de profesionales que ya están ahorrando tiempo y aumentando sus ingresos.
+                    </p>
+                    <a href="#" class="shimmer-button text-white font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg inline-block">
+                        Empieza tu prueba gratis ahora
+                    </a>
+                 </div>
+            </div>
+        </section>
+    </main>
+    
+    
+
+<footer class="glass-card-base bg-gray-800/40">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-2"><span class="gradient-text-animated">KeoPlanner</span></h3>
+                    <p class="text-gray-400">Organización inteligente para negocios modernos.</p>
+                </div>
+                 <div>
+                    <h4 class="font-semibold mb-3 text-white">Producto</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white">Características</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-white">Precios</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Seguridad</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4 class="font-semibold mb-3 text-white">Empresa</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sobre nosotros</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contacto</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3 text-white">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Términos de servicio</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Política de privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-500">
+                <p>&copy; 2025 KeoPlanner. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // Lógica para el menú móvil
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('open');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+        });
+        
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+        });
+
+        // Lógica para revelar elementos al hacer scroll (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        revealElements.forEach(el => {
+            observer.observe(el);
+        });
+
+        // Lógica para el header que cambia con el scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.add('shadow-sm');
+            }
+        });
+
+        // Lógica para el cursor personalizado
+        const cursor = document.getElementById('custom-cursor');
+
+        window.addEventListener('mousemove', e => {
+            requestAnimationFrame(() => {
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
+            });
+        });
+
+        const interactiveElements = document.querySelectorAll('a, button');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.opacity = '0';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '1';
+            });
+        });
+
+    </script>
+</body>
+</html>
+
