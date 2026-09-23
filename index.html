@@ -1286,15 +1286,16 @@
                 class="px-6 py-2 rounded-full text-gray-700 hover:text-[#f52f02] hover:bg-white/60 transition-all menu-link font-medium">Preguntas
                 Frecuentes</a>
 
-            <!-- Botones de Acción (Iniciar Sesión + Empezar Gratis) -->
+            <!-- Botones de Acción (Iniciar Sesión + Empezar Gratis) con mismas dimensiones -->
             <div class="pt-3 flex flex-col items-center space-y-3 w-full">
                 <!-- Botón Iniciar Sesión (Verde) -->
                 <a href="#sesion"
-                    class="btn-green-effect text-sm sm:text-base font-bold py-2.5 w-[160px] text-center rounded-full shadow-xs hover:shadow-md transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center whitespace-nowrap menu-link">
+                    class="btn-green-effect text-sm sm:text-base font-bold w-[170px] h-[46px] text-center rounded-full shadow-xs hover:shadow-md transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center whitespace-nowrap menu-link border-2">
                     Iniciar Sesión
                 </a>
-                <!-- Botón Empezar Gratis -->
-                <a href="#empieza gratis" class="shimmer-button text-white text-sm sm:text-base font-semibold py-2.5 w-[160px] text-center rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center whitespace-nowrap menu-link"
+                <!-- Botón Empezar Gratis (Mismas dimensiones exactas que Iniciar Sesión) -->
+                <a href="#empieza gratis"
+                    class="shimmer-button text-white text-sm sm:text-base font-bold w-[170px] h-[46px] text-center rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center whitespace-nowrap menu-link border-2 border-transparent"
                     style="background-color: #f52f02;">
                     Empezar Gratis
                 </a>
@@ -1366,10 +1367,10 @@
                                 alt="Descarga en App Store" class="w-full h-full object-contain">
                         </a>
 
-                        <!-- Botón Google Play -->
+                        <!-- Botón Google Play con fondo negro uniforme y mismas dimensiones que App Store -->
                         <a href="https://play.google.com/store/apps/details?id=com.keotecnologia.keoplanner"
                             target="_blank" rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center w-[170px] sm:w-[180px] h-[50px] sm:h-[52px] transition-all duration-300 hover:scale-105 drop-shadow-sm hover:drop-shadow-md"
+                            class="inline-flex items-center justify-center w-[170px] sm:w-[180px] h-[50px] sm:h-[52px] bg-black rounded-[9px] sm:rounded-[10px] overflow-hidden transition-all duration-300 hover:scale-105 drop-shadow-sm hover:drop-shadow-md"
                             aria-label="Descarga en Google Play">
                             <img src="./asset/google-play-keo.svg" alt="Disponible en Google Play"
                                 class="w-full h-full object-contain">
