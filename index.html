@@ -951,6 +951,14 @@
             color: #e5e7eb !important;
         }
 
+        html.dark #close-menu-btn {
+            color: #e5e7eb !important;
+        }
+
+        html.dark #close-menu-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
         /* Video Hero blend mode en modo oscuro */
         html.dark .mix-blend-multiply {
             mix-blend-mode: screen !important;
@@ -1235,6 +1243,26 @@
     <!-- Menú Móvil Pantalla Completa con Glassmorphism -->
     <div id="mobile-menu"
         class="md:hidden fixed top-0 right-0 h-full w-full glass-mobile-menu z-[60] flex flex-col items-center justify-center">
+        
+        <!-- Botón Modo Oscuro / Claro en la esquina superior izquierda (a la misma altura de la X de cerrar) -->
+        <button type="button" id="theme-toggle-mobile" onclick="toggleTheme()"
+            class="theme-toggle-btn absolute top-6 left-6"
+            aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+            <!-- Ícono Sol (visible en modo oscuro) -->
+            <svg id="theme-sun-icon-mobile" class="w-5 h-5 hidden" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path
+                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+                </path>
+            </svg>
+            <!-- Ícono Luna rellena (visible en modo claro) -->
+            <svg id="theme-moon-icon-mobile" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+
+        <!-- Botón Cerrar (Esquina superior derecha) -->
         <button id="close-menu-btn"
             class="absolute top-6 right-6 p-2 rounded-full text-gray-700 hover:bg-white/60 transition-colors"
             aria-label="Cerrar menú">
@@ -1243,7 +1271,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
         </button>
-        <nav class="flex flex-col items-center space-y-6 text-xl sm:text-2xl">
+
+        <nav class="flex flex-col items-center space-y-5 text-xl sm:text-2xl">
             <a href="#features"
                 class="px-6 py-2 rounded-full text-gray-700 hover:text-[#f52f02] hover:bg-white/60 transition-all menu-link font-medium">Características</a>
             <a href="#how-it-works"
@@ -1256,9 +1285,20 @@
             <a href="#faq"
                 class="px-6 py-2 rounded-full text-gray-700 hover:text-[#f52f02] hover:bg-white/60 transition-all menu-link font-medium">Preguntas
                 Frecuentes</a>
-            <a href="#" class="mt-4 shimmer-button text-white font-semibold py-3 px-8 rounded-full shadow-lg">
-                Empezar Gratis
-            </a>
+
+            <!-- Botones de Acción (Iniciar Sesión + Empezar Gratis) -->
+            <div class="pt-3 flex flex-col items-center space-y-3 w-full">
+                <!-- Botón Iniciar Sesión (Verde) -->
+                <a href="#sesion"
+                    class="btn-green-effect text-sm sm:text-base font-bold py-2.5 w-[160px] text-center rounded-full shadow-xs hover:shadow-md transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center whitespace-nowrap menu-link">
+                    Iniciar Sesión
+                </a>
+                <!-- Botón Empezar Gratis -->
+                <a href="#empieza gratis" class="shimmer-button text-white text-sm sm:text-base font-semibold py-2.5 w-[160px] text-center rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center whitespace-nowrap menu-link"
+                    style="background-color: #f52f02;">
+                    Empezar Gratis
+                </a>
+            </div>
         </nav>
     </div>
 
@@ -3974,16 +4014,33 @@
             const moonIcon = document.getElementById('theme-moon-icon');
             const toggleBtn = document.getElementById('theme-toggle');
 
+            const sunIconMobile = document.getElementById('theme-sun-icon-mobile');
+            const moonIconMobile = document.getElementById('theme-moon-icon-mobile');
+            const toggleBtnMobile = document.getElementById('theme-toggle-mobile');
+            const toggleMobileText = document.getElementById('theme-toggle-mobile-text');
+
             if (isDark) {
                 sunIcon?.classList.remove('hidden');
                 moonIcon?.classList.add('hidden');
                 toggleBtn?.setAttribute('aria-label', 'Cambiar a modo claro');
                 toggleBtn?.setAttribute('title', 'Cambiar a modo claro');
+
+                sunIconMobile?.classList.remove('hidden');
+                moonIconMobile?.classList.add('hidden');
+                toggleBtnMobile?.setAttribute('aria-label', 'Cambiar a modo claro');
+                toggleBtnMobile?.setAttribute('title', 'Cambiar a modo claro');
+                if (toggleMobileText) toggleMobileText.textContent = 'Modo Claro';
             } else {
                 sunIcon?.classList.add('hidden');
                 moonIcon?.classList.remove('hidden');
                 toggleBtn?.setAttribute('aria-label', 'Cambiar a modo oscuro');
                 toggleBtn?.setAttribute('title', 'Cambiar a modo oscuro');
+
+                sunIconMobile?.classList.add('hidden');
+                moonIconMobile?.classList.remove('hidden');
+                toggleBtnMobile?.setAttribute('aria-label', 'Cambiar a modo oscuro');
+                toggleBtnMobile?.setAttribute('title', 'Cambiar a modo oscuro');
+                if (toggleMobileText) toggleMobileText.textContent = 'Modo Oscuro';
             }
         }
 
