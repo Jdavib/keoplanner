@@ -1036,12 +1036,24 @@
             border-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        html.dark .bento-card-6 .bg-\[\#eefaf0\] {
-            background-color: rgba(34, 197, 94, 0.15) !important;
-        }
-
         html.dark .bento-card-6 .border-t {
             border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Agenda Digital (Tarjeta 1) en modo oscuro: Hoy, fecha y horas (10:00, 11:30, 2:00) en color blanco */
+        html.dark .bento-card-1 .rounded-\[20px\] h4,
+        html.dark .bento-card-1 .rounded-\[20px\] span.text-\[\#64748b\],
+        html.dark .bento-card-1 .rounded-\[20px\] span.tabular-nums,
+        html.dark .bento-card-1 .rounded-\[20px\] .text-\[\#475569\] {
+            color: #ffffff !important;
+        }
+
+        /* Reportes y Análisis (Tarjeta 6) en modo oscuro: +18% en color blanco tanto en desktop como mobile */
+        html.dark .bento-card-6 h4,
+        html.dark .bento-card-6 .text-xl,
+        html.dark .bento-card-6 .text-2xl,
+        html.dark .bento-card-6 .tracking-tight {
+            color: #ffffff !important;
         }
 
         /* Glass Cards: Testimonios, Pasos y Precios en modo oscuro */
@@ -1413,7 +1425,7 @@
                             class="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-20 bg-white rounded-[20px] p-2.5 sm:p-3 w-[185px] sm:w-[195px] shadow-[0_14px_30px_-6px_rgba(0,0,0,0.13),0_3px_10px_-2px_rgba(0,0,0,0.05)] border border-white/90 transform hover:scale-[1.02] transition-transform duration-300">
                             <div class="mb-2">
                                 <h4 class="text-[14px] sm:text-[15px] font-bold text-[#0f172a] leading-none mb-0.5"
-                                    style="color: #0f172a !important; transform: none !important;">Hoy</h4>
+                                    style="transform: none !important;">Hoy</h4>
                                 <span class="text-[10.5px] sm:text-[11px] text-[#64748b] font-normal leading-none">Vie,
                                     16 de May</span>
                             </div>
