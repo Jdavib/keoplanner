@@ -1091,6 +1091,14 @@
             color: #f9fafb !important;
         }
 
+        /* Texto pequeño de las cards de precios en modo oscuro */
+        html.dark .glass-pricing-card .pricing-period,
+        html.dark .glass-pricing-card p,
+        html.dark .glass-pricing-card ul li,
+        html.dark .glass-pricing-card ul li span {
+            color: #94a3b8 !important;
+        }
+
         /* Slider de Moneda (CLP / USD) en modo oscuro */
         html.dark #pricing-currency-container {
             background: #282828 !important;
@@ -1255,14 +1263,14 @@
     <!-- Menú Móvil Pantalla Completa con Glassmorphism -->
     <div id="mobile-menu"
         class="md:hidden fixed top-0 right-0 h-full w-full glass-mobile-menu z-[60] flex flex-col items-center justify-center">
-        
+
         <!-- Botón Modo Oscuro / Claro en la esquina superior izquierda (a la misma altura de la X de cerrar) -->
         <button type="button" id="theme-toggle-mobile" onclick="toggleTheme()"
-            class="theme-toggle-btn absolute top-6 left-6"
-            aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+            class="theme-toggle-btn absolute top-6 left-6" aria-label="Cambiar a modo oscuro"
+            title="Cambiar a modo oscuro">
             <!-- Ícono Sol (visible en modo oscuro) -->
-            <svg id="theme-sun-icon-mobile" class="w-5 h-5 hidden" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="theme-sun-icon-mobile" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="4"></circle>
                 <path
                     d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
@@ -3793,18 +3801,136 @@
             });
         });
 
+        // Control del estado de reproducción de videos de testimonios
+        let isAnyTestimonialVideoPlaying = false;
+        let activeTestimonialBox = null;
+
+        // Función para pausar y cerrar el video activo, restaurando la card y reactivando el carrusel
+        function stopActiveTestimonialVideo() {
+            if (activeTestimonialBox) {
+                const iframe = activeTestimonialBox.querySelector('iframe');
+                if (iframe) {
+                    try {
+                        iframe.contentWindow.postMessage(JSON.stringify({
+                            event: 'command',
+                            func: 'pauseVideo',
+                            args: []
+                        }), '*');
+                    } catch (e) { }
+                    iframe.remove();
+                }
+
+                const pauseBtn = activeTestimonialBox.querySelector('.testimonial-pause-btn');
+                if (pauseBtn) pauseBtn.remove();
+
+                // Restaurar la portada visual
+                const overlays = activeTestimonialBox.querySelectorAll('.video-cover-overlay');
+                overlays.forEach(el => {
+                    el.style.display = '';
+                    setTimeout(() => {
+                        el.style.opacity = '';
+                    }, 20);
+                });
+
+                activeTestimonialBox.classList.remove('is-playing');
+                activeTestimonialBox = null;
+            }
+
+            isAnyTestimonialVideoPlaying = false;
+            if (typeof startTestimonialAutoPlay === 'function') {
+                startTestimonialAutoPlay();
+            }
+        }
+
+        // Escuchar mensajes de estado de YouTube IFrame API (postMessage)
+        window.addEventListener('message', function (event) {
+            try {
+                if (typeof event.data !== 'string') return;
+                const data = JSON.parse(event.data);
+                if (data.event === 'onStateChange') {
+                    // Estados YouTube:
+                    // -1: unstarted, 0: ended, 1: playing, 2: paused, 3: buffering, 5: video cued
+                    if (data.info === 1 || data.info === 3) {
+                        // El video está reproduciéndose o cargando
+                        isAnyTestimonialVideoPlaying = true;
+                        if (typeof stopTestimonialAutoPlay === 'function') {
+                            stopTestimonialAutoPlay();
+                        }
+                    } else if (data.info === 0 || data.info === 2) {
+                        // El video se pausó o finalizó
+                        if (data.info === 0) {
+                            // Si finalizó completamente, cerramos y restauramos portada
+                            stopActiveTestimonialVideo();
+                        } else {
+                            // Si se pausó dentro de los controles de YouTube
+                            isAnyTestimonialVideoPlaying = false;
+                            if (typeof startTestimonialAutoPlay === 'function') {
+                                startTestimonialAutoPlay();
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                // Mensajes de otros orígenes no JSON, ignorar con seguridad
+            }
+        });
+
         // Lógica para reproducir videos de YouTube al hacer clic en Play
         function playTestimonialVideo(box) {
             if (!box || box.classList.contains('is-playing')) return;
-            const ytId = box.getAttribute('data-youtube-id') || 'dQw4w9WgXcQ';
 
-            // Crear el iframe de YouTube con reproducción automática
+            // Si había otro video sonando, cerrarlo primero
+            if (activeTestimonialBox && activeTestimonialBox !== box) {
+                stopActiveTestimonialVideo();
+            }
+
+            const ytId = box.getAttribute('data-youtube-id') || 'dQw4w9WgXcQ';
+            activeTestimonialBox = box;
+
+            // Marcar que un video está en reproducción y pausar carrusel
+            isAnyTestimonialVideoPlaying = true;
+            if (typeof stopTestimonialAutoPlay === 'function') {
+                stopTestimonialAutoPlay();
+            }
+
+            // Crear el iframe de YouTube con reproducción automática y enablejsapi=1 para escuchar eventos
             const iframe = document.createElement('iframe');
-            iframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+            iframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1&playsinline=1&origin=${encodeURIComponent(window.location.origin)}`;
             iframe.className = 'w-full h-full absolute inset-0 z-30 rounded-2xl';
             iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
             iframe.setAttribute('allowfullscreen', 'true');
             iframe.setAttribute('title', 'Video Testimonio');
+
+            // Suscribirse a los eventos del iframe una vez que cargue
+            iframe.onload = function () {
+                try {
+                    iframe.contentWindow.postMessage(JSON.stringify({
+                        event: 'listening'
+                    }), '*');
+                    iframe.contentWindow.postMessage(JSON.stringify({
+                        event: 'command',
+                        func: 'addEventListener',
+                        args: ['onStateChange']
+                    }), '*');
+                } catch (e) { }
+            };
+
+            // Botón flotante accesible de Pausar / Salir del video (especialmente cómodo en Mobile)
+            const pauseBtn = document.createElement('button');
+            pauseBtn.type = 'button';
+            pauseBtn.className = 'testimonial-pause-btn absolute top-3 right-3 z-40 bg-black/75 hover:bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-md border border-white/20 shadow-lg flex items-center gap-1.5 transition-transform active:scale-95';
+            pauseBtn.innerHTML = `
+                <svg class="w-3.5 h-3.5 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                    <rect x="6" y="5" width="4" height="14" rx="1"></rect>
+                    <rect x="14" y="5" width="4" height="14" rx="1"></rect>
+                </svg>
+                <span>Pausar</span>
+            `;
+            pauseBtn.setAttribute('aria-label', 'Pausar video y continuar testimonios');
+            pauseBtn.onclick = function (e) {
+                e.stopPropagation();
+                stopActiveTestimonialVideo();
+            };
 
             // Desvanecer y ocultar la portada, badges y botón de play
             const overlays = box.querySelectorAll('.video-cover-overlay');
@@ -3816,15 +3942,42 @@
 
             box.classList.add('is-playing');
             box.appendChild(iframe);
+            box.appendChild(pauseBtn);
         }
 
-        // Lógica para el carrusel de testimonios
+        // Lógica para el carrusel de testimonios en bucle infinito continuo
         const testimonialsCarousel = document.getElementById('testimonials-carousel');
         const testPrevBtn = document.getElementById('testimonials-prev');
         const testNextBtn = document.getElementById('testimonials-next');
         const testDots = document.querySelectorAll('.testimonial-dot');
 
+        let startTestimonialAutoPlay = function () { };
+        let stopTestimonialAutoPlay = function () { };
+
         if (testimonialsCarousel) {
+            // Guardar las tarjetas originales
+            const originalCards = Array.from(testimonialsCarousel.children);
+            const totalOriginals = originalCards.length; // 6 tarjetas
+
+            // Clonar tarjetas al inicio y al final para permitir desplazamiento infinito sin salto
+            // Clones al final
+            originalCards.forEach(card => {
+                const cloneAfter = card.cloneNode(true);
+                cloneAfter.setAttribute('data-clone', 'after');
+                testimonialsCarousel.appendChild(cloneAfter);
+            });
+            // Clones al inicio
+            originalCards.slice().reverse().forEach(card => {
+                const cloneBefore = card.cloneNode(true);
+                cloneBefore.setAttribute('data-clone', 'before');
+                testimonialsCarousel.insertBefore(cloneBefore, testimonialsCarousel.firstChild);
+            });
+
+            // Ahora el carrusel tiene [6 clones antes] + [6 originales (índices 0..5)] + [6 clones después]
+            let currentIndex = 0; // Índice de la tarjeta original activa (0 a totalOriginals - 1)
+            let isTransitioning = false;
+            let testimonialAutoPlayTimer = null;
+
             function getSingleCardStep() {
                 const card = testimonialsCarousel.querySelector('.glass-testimonial-card');
                 if (!card) return testimonialsCarousel.clientWidth;
@@ -3833,71 +3986,25 @@
                 return card.offsetWidth + gap;
             }
 
-            function slideNextTestimonial() {
-                const maxScroll = testimonialsCarousel.scrollWidth - testimonialsCarousel.clientWidth;
-                const step = getSingleCardStep();
+            function getScrollTargetForIndex(index) {
+                // Las tarjetas originales empiezan después de totalOriginals clones
+                const targetCardIndex = totalOriginals + index;
+                const card = testimonialsCarousel.children[targetCardIndex];
+                if (!card) return 0;
 
-                if (testimonialsCarousel.scrollLeft >= maxScroll - 15) {
-                    testimonialsCarousel.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    testimonialsCarousel.scrollBy({ left: step, behavior: 'smooth' });
+                // En mobile con snap-center centramos la card; en desktop alineamos al inicio (snap-start)
+                if (window.innerWidth < 640) {
+                    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                    return cardCenter - testimonialsCarousel.clientWidth / 2;
                 }
+                return card.offsetLeft - testimonialsCarousel.offsetLeft;
             }
 
-            function slidePrevTestimonial() {
-                const maxScroll = testimonialsCarousel.scrollWidth - testimonialsCarousel.clientWidth;
-                const step = getSingleCardStep();
-
-                if (testimonialsCarousel.scrollLeft <= 15) {
-                    testimonialsCarousel.scrollTo({ left: maxScroll, behavior: 'smooth' });
-                } else {
-                    testimonialsCarousel.scrollBy({ left: -step, behavior: 'smooth' });
-                }
-            }
-
-            // Bucle automático cada 3 segundos hacia la izquierda (scroll hacia la derecha)
-            let testimonialAutoPlayTimer = null;
-
-            function startTestimonialAutoPlay() {
-                stopTestimonialAutoPlay();
-                testimonialAutoPlayTimer = setInterval(() => {
-                    slideNextTestimonial();
-                }, 3000);
-            }
-
-            function stopTestimonialAutoPlay() {
-                if (testimonialAutoPlayTimer) {
-                    clearInterval(testimonialAutoPlayTimer);
-                    testimonialAutoPlayTimer = null;
-                }
-            }
-
-            // Pausar cuando el usuario pasa el cursor sobre el carrusel o interactúa
-            testimonialsCarousel.addEventListener('mouseenter', stopTestimonialAutoPlay);
-            testimonialsCarousel.addEventListener('mouseleave', startTestimonialAutoPlay);
-            testimonialsCarousel.addEventListener('touchstart', stopTestimonialAutoPlay, { passive: true });
-            testimonialsCarousel.addEventListener('touchend', () => {
-                setTimeout(startTestimonialAutoPlay, 2000);
-            }, { passive: true });
-
-            testNextBtn?.addEventListener('click', () => {
-                slideNextTestimonial();
-                startTestimonialAutoPlay();
-            });
-
-            testPrevBtn?.addEventListener('click', () => {
-                slidePrevTestimonial();
-                startTestimonialAutoPlay();
-            });
-
-            function updateDots() {
-                const maxScroll = testimonialsCarousel.scrollWidth - testimonialsCarousel.clientWidth;
-                if (maxScroll <= 0 || !testDots.length) return;
-                const progress = testimonialsCarousel.scrollLeft / maxScroll;
-                const activeIndex = Math.min(Math.round(progress * (testDots.length - 1)), testDots.length - 1);
-
+            function updateDots(activeIdx) {
+                if (!testDots.length) return;
+                const normalizedIdx = ((activeIdx % totalOriginals) + totalOriginals) % totalOriginals;
                 testDots.forEach((dot, idx) => {
-                    if (idx === activeIndex) {
+                    if (idx === normalizedIdx) {
                         dot.classList.add('bg-[#00a1f1]', 'w-6');
                         dot.classList.remove('bg-gray-300', 'w-2.5');
                     } else {
@@ -3907,18 +4014,173 @@
                 });
             }
 
-            testimonialsCarousel.addEventListener('scroll', updateDots, { passive: true });
+            // Posicionar inicialmente en la primera tarjeta original
+            function initPosition() {
+                testimonialsCarousel.style.scrollBehavior = 'auto';
+                testimonialsCarousel.scrollLeft = getScrollTargetForIndex(0);
+                updateDots(0);
+            }
+
+            // Llamar posicionamiento al cargar y al redimensionar
+            setTimeout(initPosition, 50);
+            window.addEventListener('resize', () => {
+                initPosition();
+            });
+
+            function goToIndex(newIndex, smooth = true) {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                currentIndex = newIndex;
+
+                if (smooth) {
+                    testimonialsCarousel.classList.add('scroll-smooth');
+                    testimonialsCarousel.style.scrollBehavior = 'smooth';
+                } else {
+                    testimonialsCarousel.classList.remove('scroll-smooth');
+                    testimonialsCarousel.style.scrollBehavior = 'auto';
+                }
+
+                const targetScroll = getScrollTargetForIndex(currentIndex);
+                testimonialsCarousel.scrollLeft = targetScroll;
+                updateDots(currentIndex);
+
+                // Si sobrepasamos los extremos, resetear instantáneamente sin animación después de completar el scroll
+                setTimeout(() => {
+                    let needsReset = false;
+                    if (currentIndex >= totalOriginals) {
+                        // Pasamos al set de clones después -> resetear al equivalente original
+                        currentIndex = currentIndex - totalOriginals;
+                        needsReset = true;
+                    } else if (currentIndex < 0) {
+                        // Pasamos al set de clones antes -> resetear al equivalente original
+                        currentIndex = currentIndex + totalOriginals;
+                        needsReset = true;
+                    }
+
+                    if (needsReset) {
+                        testimonialsCarousel.classList.remove('scroll-smooth', 'snap-x', 'snap-mandatory');
+                        testimonialsCarousel.style.scrollBehavior = 'auto';
+                        testimonialsCarousel.scrollLeft = getScrollTargetForIndex(currentIndex);
+                        // Restaurar snap tras el salto invisible
+                        requestAnimationFrame(() => {
+                            testimonialsCarousel.classList.add('snap-x', 'snap-mandatory');
+                            isTransitioning = false;
+                        });
+                    } else {
+                        isTransitioning = false;
+                    }
+                }, smooth ? 480 : 20);
+            }
+
+            function slideNextTestimonial() {
+                goToIndex(currentIndex + 1, true);
+            }
+
+            function slidePrevTestimonial() {
+                goToIndex(currentIndex - 1, true);
+            }
+
+            startTestimonialAutoPlay = function () {
+                stopTestimonialAutoPlay();
+                // Si un video se está reproduciendo, NO iniciar el autoplay
+                if (isAnyTestimonialVideoPlaying) return;
+                testimonialAutoPlayTimer = setInterval(() => {
+                    if (isAnyTestimonialVideoPlaying) {
+                        stopTestimonialAutoPlay();
+                        return;
+                    }
+                    slideNextTestimonial();
+                }, 3000);
+            };
+
+            stopTestimonialAutoPlay = function () {
+                if (testimonialAutoPlayTimer) {
+                    clearInterval(testimonialAutoPlayTimer);
+                    testimonialAutoPlayTimer = null;
+                }
+            };
+
+            // Pausar interacción con hover / touch (solo reanuda si no hay video activo)
+            testimonialsCarousel.addEventListener('mouseenter', stopTestimonialAutoPlay);
+            testimonialsCarousel.addEventListener('mouseleave', () => {
+                if (!isAnyTestimonialVideoPlaying) startTestimonialAutoPlay();
+            });
+
+            // Sincronizar índice y salto infinito continuo cuando el usuario desliza con el dedo (touch/swipe manual en mobile)
+            let scrollEndDebounce = null;
+            testimonialsCarousel.addEventListener('scroll', () => {
+                if (isTransitioning) return;
+                clearTimeout(scrollEndDebounce);
+                scrollEndDebounce = setTimeout(() => {
+                    if (isTransitioning) return;
+                    // Encontrar cuál tarjeta está más centrada / visible
+                    const carouselCenter = testimonialsCarousel.scrollLeft + testimonialsCarousel.clientWidth / 2;
+                    const allCards = Array.from(testimonialsCarousel.children);
+                    let closestCardIdx = 0;
+                    let minDistance = Infinity;
+
+                    allCards.forEach((c, idx) => {
+                        const cCenter = c.offsetLeft + c.offsetWidth / 2;
+                        const dist = Math.abs(cCenter - carouselCenter);
+                        if (dist < minDistance) {
+                            minDistance = dist;
+                            closestCardIdx = idx;
+                        }
+                    });
+
+                    // Convertir el índice global de hijo a índice relativo de originales
+                    let relativeIdx = closestCardIdx - totalOriginals;
+                    updateDots(relativeIdx);
+
+                    // Si el usuario deslizó hacia los clones de antes o después, resetear sin animación a la original
+                    if (relativeIdx >= totalOriginals) {
+                        relativeIdx = relativeIdx % totalOriginals;
+                        currentIndex = relativeIdx;
+                        testimonialsCarousel.classList.remove('scroll-smooth', 'snap-x', 'snap-mandatory');
+                        testimonialsCarousel.style.scrollBehavior = 'auto';
+                        testimonialsCarousel.scrollLeft = getScrollTargetForIndex(currentIndex);
+                        requestAnimationFrame(() => {
+                            testimonialsCarousel.classList.add('snap-x', 'snap-mandatory');
+                        });
+                    } else if (relativeIdx < 0) {
+                        relativeIdx = ((relativeIdx % totalOriginals) + totalOriginals) % totalOriginals;
+                        currentIndex = relativeIdx;
+                        testimonialsCarousel.classList.remove('scroll-smooth', 'snap-x', 'snap-mandatory');
+                        testimonialsCarousel.style.scrollBehavior = 'auto';
+                        testimonialsCarousel.scrollLeft = getScrollTargetForIndex(currentIndex);
+                        requestAnimationFrame(() => {
+                            testimonialsCarousel.classList.add('snap-x', 'snap-mandatory');
+                        });
+                    } else {
+                        currentIndex = relativeIdx;
+                    }
+                }, 120);
+            }, { passive: true });
+
+            testimonialsCarousel.addEventListener('touchstart', stopTestimonialAutoPlay, { passive: true });
+            testimonialsCarousel.addEventListener('touchend', () => {
+                if (!isAnyTestimonialVideoPlaying) {
+                    setTimeout(startTestimonialAutoPlay, 2500);
+                }
+            }, { passive: true });
+
+            testNextBtn?.addEventListener('click', () => {
+                slideNextTestimonial();
+                if (!isAnyTestimonialVideoPlaying) startTestimonialAutoPlay();
+            });
+
+            testPrevBtn?.addEventListener('click', () => {
+                slidePrevTestimonial();
+                if (!isAnyTestimonialVideoPlaying) startTestimonialAutoPlay();
+            });
 
             testDots.forEach((dot, idx) => {
                 dot.addEventListener('click', () => {
-                    const maxScroll = testimonialsCarousel.scrollWidth - testimonialsCarousel.clientWidth;
-                    const targetScroll = (idx / (testDots.length - 1)) * maxScroll;
-                    testimonialsCarousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
-                    startTestimonialAutoPlay();
+                    goToIndex(idx, true);
+                    if (!isAnyTestimonialVideoPlaying) startTestimonialAutoPlay();
                 });
             });
 
-            // Iniciar carrusel automático
             startTestimonialAutoPlay();
         }
 
