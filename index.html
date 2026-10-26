@@ -28,6 +28,9 @@
         }
     </script>
 
+    <!-- Wistia Player API -->
+    <script src="https://fast.wistia.net/assets/external/E-v1.js" async></script>
+
     <!-- Custom Styles -->
     <style>
         body {
@@ -393,6 +396,24 @@
         .glass-testimonial-card {
             padding: 1.15rem;
             overflow: hidden;
+        }
+
+        .testimonial-video-box {
+            aspect-ratio: 9 / 16;
+            width: 100%;
+        }
+
+        .testimonial-video-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .testimonial-video-box iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .glass-testimonial-card::before,
@@ -2851,7 +2872,7 @@
                 <div class="relative max-w-6xl mx-auto px-2 sm:px-4">
                     <!-- Flecha Navegación Izquierda -->
                     <button id="testimonials-prev"
-                        class="glass-arrow-btn absolute -left-2 sm:-left-6 lg:-left-7 top-[calc(38%-24px)] z-20 flex"
+                        class="glass-arrow-btn absolute -left-2 sm:-left-6 lg:-left-7 top-[calc(42%-24px)] z-20 flex"
                         aria-label="Ver testimonio anterior">
                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5"
                             viewBox="0 0 24 24">
@@ -2861,7 +2882,7 @@
 
                     <!-- Flecha Navegación Derecha -->
                     <button id="testimonials-next"
-                        class="glass-arrow-btn absolute -right-2 sm:-right-6 lg:-right-7 top-[calc(38%-24px)] z-20 flex"
+                        class="glass-arrow-btn absolute -right-2 sm:-right-6 lg:-right-7 top-[calc(42%-24px)] z-20 flex"
                         aria-label="Ver siguiente testimonio">
                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5"
                             viewBox="0 0 24 24">
@@ -2874,16 +2895,17 @@
                         class="flex gap-6 lg:gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory py-4 px-2"
                         style="scrollbar-width: none; -ms-overflow-style: none;">
 
-                        <!-- Tarjeta 1: Camila Torres -->
+                        <!-- Tarjeta 1: Trinidad Herrera (Wistia) -->
                         <div
-                            class="glass-testimonial-card w-[86vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-full flex-shrink-0 snap-center sm:snap-start">
+                            class="glass-testimonial-card w-[82vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-[350px] flex-shrink-0 snap-center sm:snap-start">
                             <!-- Contenedor del Video -->
-                            <div class="testimonial-video-box relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
-                                onclick="playTestimonialVideo(this)" data-youtube-id="dQw4w9WgXcQ"
-                                title="Reproducir video de Camila Torres">
+                            <div class="testimonial-video-box relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
+                                onclick="playTestimonialVideo(this)" data-video-type="wistia"
+                                data-video-url="https://keoplanner.wistia.com/s/i88706bd7wa84j9"
+                                data-wistia-id="53g57mwqvj" title="Reproducir video de Trinidad Herrera">
                                 <!-- Imagen de Portada -->
-                                <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=600&auto=format&fit=crop"
-                                    alt="Testimonio Camila Torres"
+                                <img src="https://embed-ssl.wistia.com/deliveries/65933d46078fc8ca1e7ae888c153d451.jpg"
+                                    alt="Testimonio Trinidad Herrera"
                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 video-cover-overlay">
 
                                 <!-- Capa de degradado para legibilidad -->
@@ -2932,7 +2954,7 @@
                                 <!-- Badge inferior derecho con duración -->
                                 <div
                                     class="absolute bottom-3.5 right-3.5 z-10 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-0.5 rounded-md tracking-wide video-cover-overlay">
-                                    2:14
+                                    0:35
                                 </div>
                             </div>
 
@@ -2940,13 +2962,13 @@
                             <div class="pt-4 pb-2 px-1">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop"
-                                            alt="Camila Torres"
+                                        <img src="https://embed-ssl.wistia.com/deliveries/a01f679ce514e611d8dcbb72d085581ec6a3d7a8.jpg"
+                                            alt="Trinidad Herrera"
                                             class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm">
                                         <div>
-                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Camila Torres
+                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Trinidad Herrera
                                             </h4>
-                                            <p class="text-xs text-gray-500 font-medium">Dueña de salón de belleza</p>
+                                            <p class="text-xs text-gray-500 font-medium">Dueña de centro de estética</p>
                                         </div>
                                     </div>
                                     <!-- 5 Estrellas -->
@@ -2955,22 +2977,23 @@
                                     </div>
                                 </div>
                                 <p class="text-gray-700 text-sm leading-relaxed italic font-normal">
-                                    “Desde que usamos la plataforma, la agenda se mantiene llena y mi equipo trabaja
-                                    mucho más tranquilo.”
+                                    “Keo Planner me ha permitido organizar citas, recordarle a los pacientes, solicitar
+                                    abonos y conseguir un orden excelente con todos los profesionales de mi centro.”
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Tarjeta 2: Andrés Martínez -->
+                        <!-- Tarjeta 2: Emanuel Soto (Wistia) -->
                         <div
-                            class="glass-testimonial-card w-[86vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-full flex-shrink-0 snap-center sm:snap-start">
+                            class="glass-testimonial-card w-[82vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-[350px] flex-shrink-0 snap-center sm:snap-start">
                             <!-- Contenedor del Video -->
-                            <div class="testimonial-video-box relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
-                                onclick="playTestimonialVideo(this)" data-youtube-id="jNQXAC9IVRw"
-                                title="Reproducir video de Andrés Martínez">
+                            <div class="testimonial-video-box relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
+                                onclick="playTestimonialVideo(this)" data-video-type="wistia"
+                                data-video-url="https://keoplanner.wistia.com/s/eqmgqywcx03kf1l"
+                                data-wistia-id="oxsqzqle6y" title="Reproducir video de Emanuel Soto">
                                 <!-- Imagen de Portada -->
-                                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop"
-                                    alt="Testimonio Andrés Martínez"
+                                <img src="https://embed-ssl.wistia.com/deliveries/7aeb960805327c8d9472a8075f341bdd.jpg"
+                                    alt="Testimonio Emanuel Soto"
                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 video-cover-overlay">
 
                                 <!-- Capa de degradado para legibilidad -->
@@ -2986,7 +3009,7 @@
                                         <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
                                         <line x1="12" y1="18" x2="12.01" y2="18"></line>
                                     </svg>
-                                    <span>Grabado con iPhone</span>
+                                    <span>Video real</span>
                                 </div>
 
                                 <!-- Icono menú 3 puntos superior derecho -->
@@ -3019,7 +3042,7 @@
                                 <!-- Badge inferior derecho con duración -->
                                 <div
                                     class="absolute bottom-3.5 right-3.5 z-10 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-0.5 rounded-md tracking-wide video-cover-overlay">
-                                    1:52
+                                    0:39
                                 </div>
                             </div>
 
@@ -3027,11 +3050,11 @@
                             <div class="pt-4 pb-2 px-1">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&auto=format&fit=crop"
-                                            alt="Andrés Martínez"
+                                        <img src="https://embed-ssl.wistia.com/deliveries/7aeb960805327c8d9472a8075f341bdd.jpg"
+                                            alt="Emanuel Soto"
                                             class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm">
                                         <div>
-                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Andrés Martínez
+                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Emanuel Soto
                                             </h4>
                                             <p class="text-xs text-gray-500 font-medium">Dueño de barbería</p>
                                         </div>
@@ -3042,22 +3065,23 @@
                                     </div>
                                 </div>
                                 <p class="text-gray-700 text-sm leading-relaxed italic font-normal">
-                                    “Ahora nuestros clientes agendan en segundos y nosotros podemos enfocarnos en lo más
-                                    importante: brindar una gran experiencia.”
+                                    “Gracias a Keo Planner ya no tengo que estar pendiente del teléfono a deshoras: hace
+                                    todo el trabajo por mí y automatiza las citas al 100%.”
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Tarjeta 3: Valentina Rojas -->
+                        <!-- Tarjeta 3: Anggy (Wistia) -->
                         <div
-                            class="glass-testimonial-card w-[86vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-full flex-shrink-0 snap-center sm:snap-start">
+                            class="glass-testimonial-card w-[82vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-[350px] flex-shrink-0 snap-center sm:snap-start">
                             <!-- Contenedor del Video -->
-                            <div class="testimonial-video-box relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
-                                onclick="playTestimonialVideo(this)" data-youtube-id="9bZkp7q19f0"
-                                title="Reproducir video de Valentina Rojas">
+                            <div class="testimonial-video-box relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
+                                onclick="playTestimonialVideo(this)" data-video-type="wistia"
+                                data-video-url="https://keoplanner.wistia.com/s/acycqw5sf9pbyzh"
+                                data-wistia-id="owys3pbl24" title="Reproducir video de Anggy">
                                 <!-- Imagen de Portada -->
-                                <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop"
-                                    alt="Testimonio Valentina Rojas"
+                                <img src="https://embed-ssl.wistia.com/deliveries/f6d7ca5292efe6d89da3922f2c62c179.jpg"
+                                    alt="Testimonio Anggy"
                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 video-cover-overlay">
 
                                 <!-- Capa de degradado para legibilidad -->
@@ -3106,7 +3130,7 @@
                                 <!-- Badge inferior derecho con duración -->
                                 <div
                                     class="absolute bottom-3.5 right-3.5 z-10 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-0.5 rounded-md tracking-wide video-cover-overlay">
-                                    1:37
+                                    0:41
                                 </div>
                             </div>
 
@@ -3114,11 +3138,11 @@
                             <div class="pt-4 pb-2 px-1">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=120&auto=format&fit=crop"
-                                            alt="Valentina Rojas"
+                                        <img src="https://embed-ssl.wistia.com/deliveries/f6d7ca5292efe6d89da3922f2c62c179.jpg"
+                                            alt="Anggy"
                                             class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm">
                                         <div>
-                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Valentina Rojas
+                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Anggy
                                             </h4>
                                             <p class="text-xs text-gray-500 font-medium">Manicurista profesional</p>
                                         </div>
@@ -3129,22 +3153,23 @@
                                     </div>
                                 </div>
                                 <p class="text-gray-700 text-sm leading-relaxed italic font-normal">
-                                    “La plataforma me permitió automatizar todas mis reservas y hoy tengo más tiempo
-                                    para mis clientas y para mí.”
+                                    “Ha sido la mejor inversión para mi negocio. Mis clientas agendan directo en la web
+                                    sin esperar respuesta, se acabaron los cruces y no pierdo citas.”
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Tarjeta 4: Dr. Mateo Silva -->
+                        <!-- Tarjeta 4: Julianmary (Wistia) -->
                         <div
-                            class="glass-testimonial-card w-[86vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-full flex-shrink-0 snap-center sm:snap-start">
+                            class="glass-testimonial-card w-[82vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-[350px] flex-shrink-0 snap-center sm:snap-start">
                             <!-- Contenedor del Video -->
-                            <div class="testimonial-video-box relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
-                                onclick="playTestimonialVideo(this)" data-youtube-id="L_LUpnjgPso"
-                                title="Reproducir video de Dr. Mateo Silva">
+                            <div class="testimonial-video-box relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
+                                onclick="playTestimonialVideo(this)" data-video-type="wistia"
+                                data-video-url="https://keoplanner.wistia.com/s/b0j6ihmnx57z2qh"
+                                data-wistia-id="4wuwdyo7k9" title="Reproducir video de Julianmary">
                                 <!-- Imagen de Portada -->
-                                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=600&auto=format&fit=crop"
-                                    alt="Testimonio Dr. Mateo Silva"
+                                <img src="https://embed-ssl.wistia.com/deliveries/07d68ad1ff72b79412fde72bf8af9c6b.jpg"
+                                    alt="Testimonio Julianmary"
                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 video-cover-overlay">
 
                                 <!-- Capa de degradado para legibilidad -->
@@ -3160,7 +3185,7 @@
                                         <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
                                         <line x1="12" y1="18" x2="12.01" y2="18"></line>
                                     </svg>
-                                    <span>Grabado con iPhone</span>
+                                    <span>Video real</span>
                                 </div>
 
                                 <!-- Icono menú 3 puntos superior derecho -->
@@ -3193,7 +3218,7 @@
                                 <!-- Badge inferior derecho con duración -->
                                 <div
                                     class="absolute bottom-3.5 right-3.5 z-10 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-0.5 rounded-md tracking-wide video-cover-overlay">
-                                    2:05
+                                    0:41
                                 </div>
                             </div>
 
@@ -3201,13 +3226,13 @@
                             <div class="pt-4 pb-2 px-1">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=120&auto=format&fit=crop"
-                                            alt="Dr. Mateo Silva"
+                                        <img src="https://embed-ssl.wistia.com/deliveries/07d68ad1ff72b79412fde72bf8af9c6b.jpg"
+                                            alt="Julianmary"
                                             class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm">
                                         <div>
-                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Dr. Mateo Silva
+                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Julianmary
                                             </h4>
-                                            <p class="text-xs text-gray-500 font-medium">Fisioterapeuta y Quiropráctico
+                                            <p class="text-xs text-gray-500 font-medium">Manicurista profesional
                                             </p>
                                         </div>
                                     </div>
@@ -3217,22 +3242,23 @@
                                     </div>
                                 </div>
                                 <p class="text-gray-700 text-sm leading-relaxed italic font-normal">
-                                    “Redujimos las inasistencias en un 80% gracias a los recordatorios automáticos por
-                                    WhatsApp. Una maravilla para la clínica.”
+                                    “Al ser manicurista siempre tenía las manos ocupadas. Con el link automático mis
+                                    clientas eligen su horario y mi cartera aumentó más de un 60%.”
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Tarjeta 5: Lucía Fernández -->
+                        <!-- Tarjeta 5: Will Briñes (Wistia) -->
                         <div
-                            class="glass-testimonial-card w-[86vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-full flex-shrink-0 snap-center sm:snap-start">
+                            class="glass-testimonial-card w-[82vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-[350px] flex-shrink-0 snap-center sm:snap-start">
                             <!-- Contenedor del Video -->
-                            <div class="testimonial-video-box relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
-                                onclick="playTestimonialVideo(this)" data-youtube-id="kJQP7kiw5Fk"
-                                title="Reproducir video de Lucía Fernández">
+                            <div class="testimonial-video-box relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
+                                onclick="playTestimonialVideo(this)" data-video-type="wistia"
+                                data-video-url="https://keoplanner.wistia.com/s/lwju3ozxsftrg0y"
+                                data-wistia-id="q9r1c5p25k" title="Reproducir video de Will Briñes">
                                 <!-- Imagen de Portada -->
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop"
-                                    alt="Testimonio Lucía Fernández"
+                                <img src="https://embed-ssl.wistia.com/deliveries/883f3382a1da722be4a10879588871bc.jpg"
+                                    alt="Testimonio Will Briñes"
                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 video-cover-overlay">
 
                                 <!-- Capa de degradado para legibilidad -->
@@ -3281,7 +3307,7 @@
                                 <!-- Badge inferior derecho con duración -->
                                 <div
                                     class="absolute bottom-3.5 right-3.5 z-10 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-0.5 rounded-md tracking-wide video-cover-overlay">
-                                    1:48
+                                    0:32
                                 </div>
                             </div>
 
@@ -3289,13 +3315,13 @@
                             <div class="pt-4 pb-2 px-1">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=120&auto=format&fit=crop"
-                                            alt="Lucía Fernández"
+                                        <img src="https://embed-ssl.wistia.com/deliveries/883f3382a1da722be4a10879588871bc.jpg"
+                                            alt="Will Briñes"
                                             class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm">
                                         <div>
-                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Lucía Fernández
+                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Will Briñes
                                             </h4>
-                                            <p class="text-xs text-gray-500 font-medium">Directora de Spa & Estética</p>
+                                            <p class="text-xs text-gray-500 font-medium">Dueño de barbería</p>
                                         </div>
                                     </div>
                                     <!-- 5 Estrellas -->
@@ -3304,95 +3330,8 @@
                                     </div>
                                 </div>
                                 <p class="text-gray-700 text-sm leading-relaxed italic font-normal">
-                                    “Mis terapeutas y yo amamos la interfaz. Es tan intuitiva que comenzamos a usarla de
-                                    inmediato sin perder tiempo.”
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Tarjeta 6: Carlos Mendoza -->
-                        <div
-                            class="glass-testimonial-card w-[86vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)] max-w-full flex-shrink-0 snap-center sm:snap-start">
-                            <!-- Contenedor del Video -->
-                            <div class="testimonial-video-box relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-gray-900 shadow-md group cursor-pointer"
-                                onclick="playTestimonialVideo(this)" data-youtube-id="fJ9rUzIMcZQ"
-                                title="Reproducir video de Carlos Mendoza">
-                                <!-- Imagen de Portada -->
-                                <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=600&auto=format&fit=crop"
-                                    alt="Testimonio Carlos Mendoza"
-                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 video-cover-overlay">
-
-                                <!-- Capa de degradado para legibilidad -->
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 video-cover-overlay pointer-events-none">
-                                </div>
-
-                                <!-- Badge superior izquierdo -->
-                                <div
-                                    class="absolute top-3.5 left-3.5 z-10 bg-black/40 backdrop-blur-md border border-white/20 text-white text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm video-cover-overlay">
-                                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor"
-                                        stroke-width="2" viewBox="0 0 24 24">
-                                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-                                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
-                                    </svg>
-                                    <span>Grabado con iPhone</span>
-                                </div>
-
-                                <!-- Icono menú 3 puntos superior derecho -->
-                                <div
-                                    class="absolute top-3.5 right-3.5 z-10 bg-black/40 backdrop-blur-md border border-white/20 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-sm video-cover-overlay">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                        <circle cx="5" cy="12" r="2"></circle>
-                                        <circle cx="12" cy="12" r="2"></circle>
-                                        <circle cx="19" cy="12" r="2"></circle>
-                                    </svg>
-                                </div>
-
-                                <!-- Botón central de Play -->
-                                <div
-                                    class="absolute inset-0 z-10 flex items-center justify-center video-cover-overlay pointer-events-none">
-                                    <div
-                                        class="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-white/85 backdrop-blur-md shadow-2xl flex items-center justify-center transition-all duration-300 transform group-hover:scale-115 group-hover:bg-white">
-                                        <svg class="w-7 h-7 translate-x-0.5" viewBox="0 0 24 24">
-                                            <defs>
-                                                <linearGradient id="playGrad6" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                    <stop offset="0%" stop-color="#38bdf8" />
-                                                    <stop offset="100%" stop-color="#6366f1" />
-                                                </linearGradient>
-                                            </defs>
-                                            <polygon points="5 3 19 12 5 21 5 3" fill="url(#playGrad6)"></polygon>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                                <!-- Badge inferior derecho con duración -->
-                                <div
-                                    class="absolute bottom-3.5 right-3.5 z-10 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-0.5 rounded-md tracking-wide video-cover-overlay">
-                                    2:20
-                                </div>
-                            </div>
-
-                            <!-- Información y Cita -->
-                            <div class="pt-4 pb-2 px-1">
-                                <div class="flex items-center justify-between mb-3">
-                                    <div class="flex items-center gap-3">
-                                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=120&auto=format&fit=crop"
-                                            alt="Carlos Mendoza"
-                                            class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm">
-                                        <div>
-                                            <h4 class="font-bold text-gray-900 text-base leading-tight">Carlos Mendoza
-                                            </h4>
-                                            <p class="text-xs text-gray-500 font-medium">Entrenador Personal y Coach</p>
-                                        </div>
-                                    </div>
-                                    <!-- 5 Estrellas -->
-                                    <div class="flex text-[#ffb800] text-sm tracking-tighter" aria-label="5 estrellas">
-                                        ★★★★★
-                                    </div>
-                                </div>
-                                <p class="text-gray-700 text-sm leading-relaxed italic font-normal">
-                                    “Cobrar las sesiones por adelantado con Keo Planner terminó por completo con las
-                                    cancelaciones a última hora. Imprescindible.”
+                                    “El cliente reserva directamente el día, la hora y el profesional disponible. Es la
+                                    mejor herramienta para controlar el tiempo del negocio y del cliente.”
                                 </p>
                             </div>
                         </div>
@@ -3408,6 +3347,12 @@
                         <button
                             class="testimonial-dot h-2.5 w-2.5 bg-gray-300 hover:bg-gray-400 rounded-full transition-all duration-300"
                             aria-label="Slide 3"></button>
+                        <button
+                            class="testimonial-dot h-2.5 w-2.5 bg-gray-300 hover:bg-gray-400 rounded-full transition-all duration-300"
+                            aria-label="Slide 4"></button>
+                        <button
+                            class="testimonial-dot h-2.5 w-2.5 bg-gray-300 hover:bg-gray-400 rounded-full transition-all duration-300"
+                            aria-label="Slide 5"></button>
                     </div>
 
 
@@ -3812,10 +3757,18 @@
         // Control del estado de reproducción de videos de testimonios
         let isAnyTestimonialVideoPlaying = false;
         let activeTestimonialBox = null;
+        let activeWistiaVideo = null;
 
         // Función para pausar y cerrar el video activo, restaurando la card y reactivando el carrusel
         function stopActiveTestimonialVideo() {
             if (activeTestimonialBox) {
+                if (activeWistiaVideo) {
+                    try {
+                        activeWistiaVideo.pause();
+                    } catch (e) { }
+                    activeWistiaVideo = null;
+                }
+
                 const iframe = activeTestimonialBox.querySelector('iframe');
                 if (iframe) {
                     try {
@@ -3883,7 +3836,7 @@
             }
         });
 
-        // Lógica para reproducir videos de YouTube al hacer clic en Play
+        // Lógica para reproducir videos (Wistia y YouTube) al hacer clic en Play
         function playTestimonialVideo(box) {
             if (!box || box.classList.contains('is-playing')) return;
 
@@ -3892,7 +3845,6 @@
                 stopActiveTestimonialVideo();
             }
 
-            const ytId = box.getAttribute('data-youtube-id') || 'dQw4w9WgXcQ';
             activeTestimonialBox = box;
 
             // Marcar que un video está en reproducción y pausar carrusel
@@ -3901,27 +3853,89 @@
                 stopTestimonialAutoPlay();
             }
 
-            // Crear el iframe de YouTube con reproducción automática y enablejsapi=1 para escuchar eventos
-            const iframe = document.createElement('iframe');
-            iframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1&playsinline=1&origin=${encodeURIComponent(window.location.origin)}`;
-            iframe.className = 'w-full h-full absolute inset-0 z-30 rounded-2xl';
-            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-            iframe.setAttribute('allowfullscreen', 'true');
-            iframe.setAttribute('title', 'Video Testimonio');
+            // Identificar si es Wistia o YouTube
+            let wistiaId = box.getAttribute('data-wistia-id');
+            const videoUrl = box.getAttribute('data-video-url') || '';
+            const ytId = box.getAttribute('data-youtube-id');
 
-            // Suscribirse a los eventos del iframe una vez que cargue
-            iframe.onload = function () {
-                try {
-                    iframe.contentWindow.postMessage(JSON.stringify({
-                        event: 'listening'
-                    }), '*');
-                    iframe.contentWindow.postMessage(JSON.stringify({
-                        event: 'command',
-                        func: 'addEventListener',
-                        args: ['onStateChange']
-                    }), '*');
-                } catch (e) { }
-            };
+            // Si se pasa enlace directo de Wistia
+            if (!wistiaId && videoUrl) {
+                const wistiaShareMap = {
+                    'i88706bd7wa84j9': '53g57mwqvj',
+                    'eqmgqywcx03kf1l': 'oxsqzqle6y',
+                    'acycqw5sf9pbyzh': 'owys3pbl24',
+                    'b0j6ihmnx57z2qh': '4wuwdyo7k9',
+                    'lwju3ozxsftrg0y': 'q9r1c5p25k'
+                };
+                for (const [key, id] of Object.entries(wistiaShareMap)) {
+                    if (videoUrl.includes(key)) {
+                        wistiaId = id;
+                        break;
+                    }
+                }
+                if (!wistiaId) {
+                    const wistiaMatch = videoUrl.match(/wistia\.(?:com|net)\/(?:embed\/iframe|medias|s)\/([a-zA-Z0-9]+)/);
+                    if (wistiaMatch) wistiaId = wistiaMatch[1];
+                }
+            }
+
+            // Crear el iframe con soporte para ambos proveedores
+            const iframe = document.createElement('iframe');
+            iframe.className = 'w-full h-full absolute inset-0 z-30 rounded-2xl bg-black';
+            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen');
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('title', box.getAttribute('title') || 'Video Testimonio');
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('scrolling', 'no');
+
+            if (wistiaId) {
+                // Configurar reproductor Wistia dentro de la card
+                iframe.src = `https://fast.wistia.net/embed/iframe/${wistiaId}?autoPlay=true&playsinline=1&controlsVisibleOnLoad=true`;
+                iframe.setAttribute('name', 'wistia_embed');
+                iframe.setAttribute('allowtransparency', 'true');
+
+                // Integración con Wistia Queue API para pausas y finalización
+                window._wq = window._wq || [];
+                window._wq.push({
+                    id: wistiaId,
+                    onReady: function (video) {
+                        activeWistiaVideo = video;
+                        video.bind('play', function () {
+                            isAnyTestimonialVideoPlaying = true;
+                            if (typeof stopTestimonialAutoPlay === 'function') {
+                                stopTestimonialAutoPlay();
+                            }
+                        });
+                        video.bind('pause', function () {
+                            isAnyTestimonialVideoPlaying = false;
+                            if (typeof startTestimonialAutoPlay === 'function') {
+                                startTestimonialAutoPlay();
+                            }
+                        });
+                        video.bind('end', function () {
+                            stopActiveTestimonialVideo();
+                        });
+                    }
+                });
+            } else {
+                // Crear el iframe de YouTube con reproducción automática y enablejsapi=1 para escuchar eventos
+                const youtubeId = ytId || 'dQw4w9WgXcQ';
+                iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1&playsinline=1&origin=${encodeURIComponent(window.location.origin)}`;
+
+                // Suscribirse a los eventos del iframe una vez que cargue
+                iframe.onload = function () {
+                    try {
+                        iframe.contentWindow.postMessage(JSON.stringify({
+                            event: 'listening'
+                        }), '*');
+                        iframe.contentWindow.postMessage(JSON.stringify({
+                            event: 'command',
+                            func: 'addEventListener',
+                            args: ['onStateChange']
+                        }), '*');
+                    } catch (e) { }
+                };
+            }
 
             // Botón flotante accesible de Pausar / Salir del video (especialmente cómodo en Mobile)
             const pauseBtn = document.createElement('button');
